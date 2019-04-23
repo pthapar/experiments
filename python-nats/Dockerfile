@@ -7,4 +7,4 @@ RUN wget https://github.com/shadiakiki1986/nats-cli/releases/download/0.0.4.2/na
 
 RUN mkdir -p /app
 COPY *.py /app/
-CMD ["./server.sh"]
+CMD ["/usr/local/bin/python", "demo-app.py"]
