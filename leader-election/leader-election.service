@@ -1,0 +1,11 @@
+[Unit]
+Description=cluster ip leader election
+
+[Service]
+ExecStart=/bin/leader-election
+ExecStopPost=/bin/ifcdown eth0:1
+RestartSec=5
+Restart=Always
+
+[Install]
+WantedBy=multi-user.target
