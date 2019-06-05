@@ -2,7 +2,7 @@
 Description=cluster ip leader election
 
 [Service]
-ExecStart=/bin/leader-election
+ExecStart=/bin/leader-election -nodeID 2 -cluster-ip 10.40.224.5/20 -logtostderr -etcd-addr 10.40.232.11:2379
 ExecStopPost=/bin/ifcdown eth0:1
 RestartSec=5
 Restart=Always
