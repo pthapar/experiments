@@ -1,0 +1,16 @@
+[Unit]
+Description=etcd key-value store
+Documentation=https://github.com/etcd-io/etcd
+After=network.target
+
+[Service]
+Type=notify
+Environment=ETCD_DATA_DIR=/var/lib/leader-etcd
+Environment=ETCD_NAME=%m
+ExecStart=/usr/bin/etcd --listen-client-urls "http://10.40.233.119:2379" --debug --advertise-client-urls "http://10.40.233.119:2380"
+Restart=always
+RestartSec=10s
+LimitNOFILE=40000
+
+[Install]
+WantedBy=multi-user.target

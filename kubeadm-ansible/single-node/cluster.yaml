@@ -15,7 +15,11 @@
   become: yes
   tasks:
     - name: join cluster
-      shell: "{{ hostvars['master'].join_command }} --ignore-preflight-errors all --node-name {{inventory_hostname}} >> node_joined.txt"
+      shell: "{{ hostvars['master'].join_command }} --node-name {{inventory_hostname}} >> node_joined.txt"
       args:
         chdir: $HOME
         creates: node_joined.txt
+    - name: create /etc/kubernetes/manifests to stop from spewing kubelet logs
+      file:
+          path: /etc/kubernetes/manifests
+          state: directory

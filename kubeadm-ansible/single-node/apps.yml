@@ -1,0 +1,9 @@
+- hosts: master
+  become: yes
+  tasks:
+    - name: copy echo ap 
+      copy:
+        src: echo-app.yaml
+        dest: $HOME/echo-app.yaml
+    - name: start echo app
+      shell: kubectl create -f $HOME/echo-app.yaml

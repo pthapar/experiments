@@ -1,0 +1,15 @@
+- hosts: all 
+  become: yes
+  tasks:
+    - name: copy leader-election binary 
+      copy:
+        src: leader-election 
+        dest: /bin/leader-election
+    - name: chmod leader election
+      file:
+          path: /bin/leader-election
+          mode: u+x
+    - name: start leader election
+      shell: systemctl daemon-reload
+    - name: start leader election
+      shell: systemctl restart leader-election

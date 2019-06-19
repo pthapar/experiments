@@ -216,6 +216,9 @@ func main() {
 		glog.Exitf("failed to connect to etcd servers. %s", err.Error())
 	}
 
+	// Make sure to bring the ifc down
+	cleanUpNetIfc()
+
 	// Keep the lease till this node is alive
 	lease, _ := cli.Grant(context.TODO(), 2)
 	glog.Infof("[node-%d]lease object: %+v", *nodeID, *lease)
@@ -224,9 +227,6 @@ func main() {
 		SetLeader()
 		bringUpClusterIP()
 	}
-
-	// Make sure to bring the ifc down
-	cleanUpNetIfc()
 
 	var gracefulStop = make(chan os.Signal)
 	signal.Notify(gracefulStop, syscall.SIGTERM)

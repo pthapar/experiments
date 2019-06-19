@@ -1,0 +1,11 @@
+[Unit]
+Description=cluster ip leader election
+
+[Service]
+ExecStart=/bin/leader-election -nodeID 0 -cluster-ip 10.40.226.58/20 -logtostderr -etcd-addr 10.40.233.119:2379
+ExecStopPost=/bin/ifcdown eth0:1
+RestartSec=5
+Restart=always
+
+[Install]
+WantedBy=multi-user.target
