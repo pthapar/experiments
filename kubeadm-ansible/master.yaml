@@ -1,14 +1,8 @@
 - hosts: master
   become: yes
   tasks:
-    - name: reset kubeadm
-      shell: kubeadm reset --force
-    
-    - name: stop config server
-      shell: systemctl stop sherlock_configserver && systemctl disable sherlock_configserver
-
     - name: initialize the cluster
-      shell: kubeadm init --pod-network-cidr=10.96.0.0/16 >> cluster_initialized.txt
+      shell: kubeadm init --pod-network-cidr=10.32.0.0/16 --node-name master >> cluster_initialized.txt
       args:
         chdir: $HOME
         creates: cluster_initialized.txt
@@ -27,9 +21,18 @@
         dest: /home/centos/.kube/config
         remote_src: yes
         owner: centos
+ 
+    - name: copy admin.conf to user's kube config
+      copy:
+        src: /etc/kubernetes/admin.conf
+        dest: $HOME/.kube/config
+        remote_src: yes
+        owner: centos
+    
     - copy:
         src: weave-net.yaml 
         dest: /tmp/weave-net.yaml 
+
     - name: install Pod network
       become: yes
       become_user: centos

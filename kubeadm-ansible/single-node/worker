@@ -1,2 +1,0 @@
-[workers]
-worker ansible_host=10.40.233.119 ansible_user=root

@@ -7,11 +7,11 @@
 #       state: present
 #       update_cache: true
 #
-   - name: start Docker
-     service:
-       name: docker
-       state: started
-
+#   - name: start Docker
+#     service:
+#       name: docker
+#       state: started
+#
    - name: disable SELinux
      command: setenforce 0
 
