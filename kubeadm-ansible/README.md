@@ -4,11 +4,11 @@ Note: The set up assumes that you already have a VM that you can access over ssh
 
 # Pre-requisites
 ## Install ansible:
-Centos: yum install ansible
-Mac: brew install ansible
+Centos: `yum install ansible`
+Mac: `brew install ansible`
 
 ## Install etcd on one or more nodes:
-yum install etcd -y
+`yum install etcd -y`
 
 ## Finding a floating IP that you can use(for AHV):
 You can use a tool arp-scan to find out all used IP's in the local subnet. It prints IP's in an increasing order. You can find any missing 
@@ -39,14 +39,14 @@ Note: Remember the node IP that is advertized by etcd.
 We leverage ansible and kubeadm to install the k8s cluster
 
 1. Update inventory file: Please update hosts.yml for your intended cluster
-2. Remove previous installations if they exist: ansible-playbook -i hosts cleanup.yml
-3. Install kube dependencies: ansible-playbook -i hosts kube-dependencies.yml
-4. Bring up master node: ansible-playbook -i hosts master.yml
-5. Join other nodes: ansible-playbook -i hosts cluster.yml
+2. Remove previous installations if they exist: `ansible-playbook -i hosts cleanup.yml`
+3. Install kube dependencies: `ansible-playbook -i hosts kube-dependencies.yml`
+4. Bring up master node: `ansible-playbook -i hosts master.yml`
+5. Join other nodes: `ansible-playbook -i hosts cluster.yml`
 6. Replace the etcd node IP and floating(a.k.a cluster IP) in leader-election.service 
-6. Start leader election: ansible-playbook -i hosts leader-election
+6. Start leader election: `ansible-playbook -i hosts leader-election`
 
 
 # Testing your set up
 At this point, you have a running k8s cluster with floating IP. You can try it out by deploying an app which uses node port:
-ansible-playbook -i hosts apps.yml
+`ansible-playbook -i hosts apps.yml`
