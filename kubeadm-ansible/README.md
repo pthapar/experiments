@@ -24,7 +24,7 @@ Starting arp-scan 1.9.2 with 4096 hosts (http://www.nta-monitor.com/tools-resour
 10.40.224.5	50:6b:8d:27:63:cc	(Unknown)
 10.40.224.11	0c:c4:7a:c7:6e:12	Super Micro Computer, Inc.
 ```
-As you can see from above output, IPs from 10.40.224.5 to 10.40.224.11 arenot used by any node on the localnet. So, pick any one as
+As you can see from above output, IPs from 10.40.224.5 to 10.40.224.11 are not used by any node on the localnet. So, pick any one as
 the floating IP.
 Note: Keep this floating IP handy. You would need it for changing the leader election service file below.
 
