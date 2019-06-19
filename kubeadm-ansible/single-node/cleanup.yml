@@ -1,0 +1,38 @@
+- hosts: all
+  become: yes
+  tasks:
+    - name: reset kubeadm
+      shell: kubeadm reset --force
+
+    - name: remove /etc/kubernetes
+      file:
+        path: /etc/kubernetes
+        state: absent
+
+    - name:  remove /etc/cni
+      file:
+        path: /etc/cni/
+        state: absent
+
+    - name:  remove cluster_initialized.txt 
+      file:
+        path: $HOME/cluster_initialized.txt
+        state: absent
+
+    - name:  remove cluster_initialized.txt 
+      file:
+        path: $HOME/node_joined.txt
+        state: absent
+
+    - name:  remove cluster_initialized.txt 
+      file:
+        path: $HOME/pod_network_setup.txt
+        state: absent
+
+    - name:  remove cluster_initialized.txt 
+      file:
+        path: /home/centos/pod_network_setup.txt 
+        state: absent
+
+    - name: stop configserver
+      shell: systemctl stop sherlock_configserver && systemctl disable sherlock_configserver
