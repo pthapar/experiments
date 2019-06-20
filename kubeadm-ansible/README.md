@@ -1,6 +1,7 @@
 # Description
 This entails the steps to install a k8s cluster with floating IP. 
-Note: The set up assumes that you already have a VM that you can access over ssh as root user.
+
+```Note: The set up assumes that you already have a VM that you can access over ssh as root user.```
 
 # Pre-requisites
 ## Install ansible:
@@ -44,7 +45,7 @@ We leverage ansible and kubeadm to install the k8s cluster
 4. Bring up master node: `ansible-playbook -i hosts master.yml`
 5. Join other nodes: `ansible-playbook -i hosts cluster.yml`
 6. Replace the etcd node IP and floating(a.k.a cluster IP) in leader-election.service 
-6. Start leader election: `ansible-playbook -i hosts leader-election`
+6. Start leader election: `ansible-playbook -i hosts leader-election.yml`
 
 
 # Testing your set up
