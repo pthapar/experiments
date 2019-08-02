@@ -1,0 +1,81 @@
+- hosts: local
+  any_errors_fatal: true
+  become: yes
+  connection: local
+  serial: yes
+  tasks:
+    - name: upgrade sherlock_configserver
+      block:
+      - name: copy upgrade sherlock_configserver binary
+        copy:
+          src: /usr/local/bin/sherlock_configserver
+          dest: /tmp/sherlock_configserver.backup
+          force: no
+          remote_src: yes
+      - name: copy upgrade sherlock_configserver binary
+        copy:
+          src: /data/sherlock/sherlock_edge_deployer/sherlock_configserver
+          dest: /usr/local/bin/sherlock_configserver
+          force: no
+          remote_src: yes
+      - name: restart sherlock_configserver
+        become_user: root
+        systemd:
+          name: sherlock_configserver
+          state: restarted
+          daemon_reload: yes
+      rescue:
+      - name: copy upgrade sherlock_configserver binary
+        copy:
+          src: /tmp/sherlock_configserver.backup
+          dest: /usr/local/bin/sherlock_configserver
+          force: no
+          remote_src: yes
+      - name: restart sherlock_configserver
+        become_user: root
+        systemd:
+          name: sherlock_configserver
+          state: restarted
+          daemon_reload: yes
+      - fail:
+          msg: failed to perform upgrade sherlock_configserver
+- hosts: remote
+  any_errors_fatal: true
+  become: yes
+  serial: yes
+  tasks:
+    - name: upgrade sherlock_configserver
+      block:
+      - name: copy upgrade sherlock_configserver binary
+        copy:
+          src: /usr/local/bin/sherlock_configserver
+          dest: /tmp/sherlock_configserver.backup
+          force: no
+          remote_src: yes
+      - name: copy upgrade sherlock_configserver binary
+        copy:
+          src: /data/sherlock/sherlock_edge_deployer/sherlock_configserver
+          dest: /usr/local/bin/sherlock_configserver
+          force: no
+          remote_src: yes
+      - name: restart sherlock_configserver
+        become_user: root
+        systemd:
+          name: sherlock_configserver
+          state: restarted
+          daemon_reload: yes
+      rescue:
+      - name: copy upgrade sherlock_configserver binary
+        copy:
+          src: /tmp/sherlock_configserver.backup
+          dest: /usr/local/bin/sherlock_configserver
+          force: no
+          remote_src: yes
+      - name: restart sherlock_configserver
+        become_user: root
+        systemd:
+          name: sherlock_configserver
+          state: restarted
+          daemon_reload: yes
+      - fail:
+          msg: failed to perform upgrade sherlock_configserver
