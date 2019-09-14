@@ -1,0 +1,10 @@
+- hosts: k8s_ca
+  roles:
+    - 
+      role: githubixx.cfssl 
+      tags: role-cfssl
+- hosts: k8s_ca
+  roles:
+    -
+      role: githubixx.kubernetes-ca
+      tags: role-kubernetes-ca
