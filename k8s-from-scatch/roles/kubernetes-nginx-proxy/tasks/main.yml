@@ -1,0 +1,43 @@
+---
+- name: Install nginx binary 
+  yum:
+    name: nginx 
+
+- name: nginx-proxy | Make nginx directory
+  file:
+    path: "{{ nginx_config_dir }}"
+    state: directory
+    mode: 0700
+    owner: root
+
+- name: nginx-proxy | Write nginx-proxy configuration
+  template:
+    src: "loadbalancer/nginx.conf.j2"
+    dest: "{{ nginx_config_dir }}/nginx.conf"
+    owner: root
+    mode: 0755
+    backup: yes
+
+- name: nginx-proxy | Get checksum from config
+  stat:
+    path: "{{ nginx_config_dir }}/nginx.conf"
+  register: nginx_stat
+
+- name: nginx-proxy | Write nginx systemd unit file
+  template:
+    src: etc/systemd/system/nginx-rev-proxy.service.j2
+    dest: /etc/systemd/system/nginx-rev-proxy.service 
+    owner: root
+    group: root
+    mode: 0644
+  tags:
+    - k8s-nginx-rev-proxy
+
+- name: Enable and start nginx 
+  service:
+    name: nginx-rev-proxy
+    daemon-reload: yes
+    enabled: yes
+    state: restarted
+  tags:
+    - k8s-nginx-rev-proxy

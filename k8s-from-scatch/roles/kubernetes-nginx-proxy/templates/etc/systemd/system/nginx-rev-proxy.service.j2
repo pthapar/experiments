@@ -1,0 +1,14 @@
+#jinja2: trim_blocks:False
+[Unit]
+Description=Kubernetes Worker reverse proxy 
+
+[Service]
+PIDFile=/run/nginx.pid
+ExecStart={{nginx_bin_dir}}/nginx
+Restart=on-failure
+RestartSec=5
+ExecStop=/bin/kill -s QUIT $MAINPID
+ExecReload=/usr/sbin/nginx -s reload
+
+[Install]
+WantedBy=multi-user.target

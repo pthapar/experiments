@@ -1,0 +1,11 @@
+---
+kube_manifest_dir: /etc/kubernetes/manifests
+nginx_config_dir: /etc/nginx
+nginx_bin_dir: /sbin 
+
+loadbalancer_apiserver_memory_requests: 32M
+loadbalancer_apiserver_cpu_requests: 25m
+
+loadbalancer_apiserver_keepalive_timeout: 5m
+loadbalancer_apiserver_port: 443
+kube_apiserver_port: 6443
