@@ -1,0 +1,6 @@
+# cat cluster.yaml
+- hosts: nginx_proxy
+  roles:
+    -
+      role: kubernetes-nginx-proxy
+      tags: kubernetes-nginx-proxy
