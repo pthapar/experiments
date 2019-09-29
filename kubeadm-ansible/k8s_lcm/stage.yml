@@ -1,0 +1,13 @@
+- hosts: all
+  tasks:
+    - name: prepull image for kubernetes version "{{ k8s_version }}"
+      shell: kubeadm config images pull --kubernetes-version "{{ k8s_version }}"
+    - name: download binaries for kubernetes version "{{ k8s_version }}"
+      yum:
+        name: "{{ packages }}"
+        download_only: yes
+      vars:
+        packages:
+        - kubelet-{{ k8s_version }}-0
+        - kubectl-{{ k8s_version }}-0
+        - kubeadm-{{ k8s_version }}-0
