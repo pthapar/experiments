@@ -9,7 +9,7 @@
     - name: upgrade control plane to {{ k8s_version }}
       shell: kubeadm upgrade apply v{{ k8s_version }} -y
 
-- hosts: nonbootstrapmasters
+- hosts: other_control_plane_nodes
   tasks:
     - name: upgrade control plane to {{ k8s_version }}
       shell: kubeadm upgrade node
