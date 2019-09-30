@@ -1,0 +1,21 @@
+- hosts: bootstrapmaster
+  tasks:
+    - name: ensure binaries for current kubernetes version "{{ k8s_version }}" are installed
+      yum:
+        name: "{{ packages }}"
+        allow_downgrade: yes
+      vars:
+        packages:
+        - kubelet-{{ k8s_version }}-0
+        - kubectl-{{ k8s_version }}-0
+        - kubeadm-{{ k8s_version }}-0
+    - name: generate template for kubeadm config
+      template:
+        src: kubeadm.yml.j2
+        dest: $HOME/kubeadm.yml
+    - name: create kubeadm cluster
+      shell: kubeadm init --config $HOME/kubeadm.yml
+    - name: copy kubeconfig to $HOME/.kube
+      shell: /bin/mkdir -p $HOME/.kube && /bin/cp /etc/kubernetes/admin.conf $HOME/.kube/config && /bin/chown $(id -u):$(id -g) $HOME/.kube/config
+    - name: Create weavenet pod network
+      shell: kubectl apply -f /data/sherlock/sherlock_edge_deployer/weave-net.yaml

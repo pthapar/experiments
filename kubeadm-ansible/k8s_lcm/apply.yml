@@ -3,9 +3,20 @@
     - name: install already downloaded kubeadm {{ k8s_version }}
       yum:
         name: kubeadm-{{ k8s_version }}-0
+        allow_downgrade: yes
+- hosts: bootstrapmaster
+  tasks:
     - name: upgrade control plane to {{ k8s_version }}
       shell: kubeadm upgrade apply v{{ k8s_version }} -y
-    - name: download binaries for kubernetes version "{{ k8s_version }}"
+
+- hosts: other_control_plane_nodes
+  tasks:
+    - name: upgrade control plane to {{ k8s_version }}
+      shell: kubeadm upgrade node
+
+- hosts: all
+  tasks:
+    - name: install binaries for kubernetes version "{{ k8s_version }}"
       yum:
         name: "{{ packages }}"
       vars:

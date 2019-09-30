@@ -1,0 +1,18 @@
+- hosts: all
+  tasks:
+    - name: stop configserver
+      shell: systemctl stop sherlock_configserver && systemctl disable sherlock_configserver
+    
+    - name: stop kubelet
+      systemd:
+        name: kubelet
+        state: stopped
+
+    - name: reset kubeadm
+      shell: kubeadm reset --force
+
+    - name: remove /var/lib/kubelet
+      file:
+        path: /var/lib/kubelet
+        state: absent
+        force: yes
