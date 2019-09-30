@@ -7,6 +7,7 @@ This repo contains k8s life cycle management ansible playbooks. Underneath, we l
 3. HA is only supported in k8s/kubeadm version 1.15.3 onwards.
 4. For now, we are creating a new bootstrap token each time a new node join is attempted.
 4. If you are using sherlock base image, it is recommended to run cleanup.yml playbook on any participating node before anything else
+5. Please perform all the below steps as root
 
 # Getting started
 In order to get started, you would need a centos-7 VM/machine with ansible-2.8.4 installed on it. In order to install ansible-2.8.4 on centos, you may use:
