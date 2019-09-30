@@ -63,6 +63,7 @@ This section goes through a set of workflows that would provide a hands-on exper
     ```
     ansible-playbook -i hosts.ini apply.yml --extra-vars "k8s_version=1.15.3" -vv
     ```
+    `Note: Node will show up with 1.15.3 in a couple of minutes when all components have restarted. You can check output of kubectl get no to observe the flip` 
 
 * Add a control plane node to 1 node cluster
   * Add the new node to `new_control_plane_nodes` & `other_control_plane` like shown below for new node 10.45.27.59
