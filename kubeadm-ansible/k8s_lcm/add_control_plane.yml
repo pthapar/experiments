@@ -8,6 +8,8 @@
 
 - hosts: new_control_plane_nodes
   tasks:
+    - name: activate ip forwarding
+      shell: echo 1 >> /proc/sys/net/bridge/bridge-nf-call-iptables
     - name: set join command
       set_fact:
         join_command: "{{ hostvars[groups['bootstrapmaster'][0]]['join_command_raw'].stdout_lines[0] }}"
