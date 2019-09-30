@@ -51,7 +51,7 @@ This section goes through a set of workflows that would provide a hands-on exper
     ```
   * This step creates a 1 node 1.14.4 cluster.
     ```
-    ansible-playbook -i hosts.ini create_cluster.yml --extra-vars "k8s_version=1.14.4" -vv
+    ansible-playbook -i hosts.ini create_one_node_cluster.yml --extra-vars "k8s_version=1.14.4" -vv
     ```
 
 * Upgrade 1 node cluster to 1.15.3
