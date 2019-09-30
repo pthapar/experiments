@@ -9,6 +9,8 @@
         - kubelet-{{ k8s_version }}-0
         - kubectl-{{ k8s_version }}-0
         - kubeadm-{{ k8s_version }}-0
+    - name: activate ip forwarding
+      shell: echo 1 >> /proc/sys/net/bridge/bridge-nf-call-iptables
     - name: generate template for kubeadm config
       template:
         src: kubeadm.yml.j2

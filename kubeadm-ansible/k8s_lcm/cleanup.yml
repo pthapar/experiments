@@ -1,4 +1,5 @@
 - hosts: all
+  connection: local
   tasks:
     - name: stop configserver
       shell: systemctl stop sherlock_configserver && systemctl disable sherlock_configserver
