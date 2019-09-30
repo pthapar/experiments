@@ -7,7 +7,7 @@ This repo contains k8s life cycle management ansible playbooks. Underneath, we l
 3. HA is only supported in k8s/kubeadm version 1.15.3 onwards.
 4. For now, we are creating a new bootstrap token each time a new node join is attempted.
 4. If you are using sherlock base image, it is recommended to run cleanup.yml playbook on any participating node before anything else
-5. Please perform all the below steps as root
+5. Please perform all the below steps as root.
 
 # Getting started
 In order to get started, you would need a centos-7 VM/machine with ansible-2.8.4 installed on it. In order to install ansible-2.8.4 on centos, you may use:
@@ -36,6 +36,14 @@ This section goes through a set of workflows that would provide a hands-on exper
     ```
       ansible-playbook -i hosts.ini cleanup.yml
     ```
+    Or simply
+    ```
+    systemctl stop sherlock_configserver && systemctl disable sherlock_configserver && systemctl  stop kubelet && \
+    kubeadm reset --force && \
+    rm -rf /var/lib/kubelet && \
+    iptables -F && iptables -t nat -F && iptables -t mangle -F && iptables -X
+    ```
+  * Please make sure to set distinct hostname for all nodes. You may use `sudo hostname <MY_HOSTNAME>` to set a specific hostname.
 
 * Set up a 1 node k8s 1.14.4 cluster
   * Add a node to hosts.ini like show below:
