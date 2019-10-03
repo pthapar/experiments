@@ -1,0 +1,35 @@
+- hosts: bootstrapmaster
+  tasks:
+    - name: upload certs with encryption key {{ encrypt_key }}
+      shell: kubeadm init phase upload-certs --upload-certs --certificate-key "{{ encrypt_key }}"
+    - name: get join command
+      shell: kubeadm token create --print-join-command
+      register: join_command_raw
+
+- hosts: promoted_worker_nodes 
+  tasks:
+    - name: ensure binaries for current kubernetes version "{{ k8s_version }}" are installed
+      yum:
+        name: "{{ packages }}"
+        allow_downgrade: yes
+      vars:
+        packages:
+        - kubelet-{{ k8s_version }}-0
+        - kubectl-{{ k8s_version }}-0
+        - kubeadm-{{ k8s_version }}-0
+    - name: kubeadm join phase command prefix
+      set_fact:
+        join_cmd: "{{ hostvars[groups['bootstrapmaster'][0]]['join_command_raw'].stdout_lines[0] }}"
+    - name: control plane prepare all
+      shell: "{{ join_cmd.split(' ')[:2] | join(' ') }} phase control-plane-prepare all {{ join_cmd.split(' ')[2:] | join(' ') }} --control-plane --certificate-key {{ encrypt_key}}"
+    - name: control plane join all
+      shell: kubeadm join phase control-plane-join all --control-plane
+    - name: move kubeconfig to HOME
+      shell: /bin/mkdir -p $HOME/.kube && /bin/cp /etc/kubernetes/admin.conf $HOME/.kube/config && /bin/chown $(id -u):$(id -g) $HOME/.kube/config
+
+- hosts: bootstrapmaster
+  tasks:
+    - name: remove unschedulable label from worker nodes
+      shell: "kubectl taint node {{ hostvars[item]['ansible_hostname'] }} node-role.kubernetes.io/master-"
+      with_items:
+        - "{{ groups['worker_nodes'] }}"
