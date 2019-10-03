@@ -128,6 +128,34 @@ This section goes through a set of workflows that would provide a hands-on exper
     ```
    * Execute ansible playbook to add the worker node:
     ```
-    ansible-playbook -i hosts.ini add_worker_node.yml --extra-vars "k8s_version=1.15.4 hostname=k8s-lcm-ex3" -vv
+    ansible-playbook -i hosts.ini add_worker_node.yml --extra-vars "k8s_version=1.15.4" -vv
     ```
      In order to avoid picking `localhost` as the hostname for new node in k8s, add_worker_node.yml asks for hostname. This   sets the hostname of the new node to given value.
+ 
+  * Promote control plane node to worker node
+    * Add existing worker node(nodeC) to `promoted_worker_nodes` group.
+    ```
+    [all]
+    nodeA ansible_host=<nodeA_IP_HERE> ansible_user=root
+    nodeB ansible_host=<nodeB_IP_HERE> ansible_user=root
+    nodeC ansible_host=<nodeC_IP_HERE> ansible_user=root
+    
+    [bootstrapmaster]
+    nodeA
+
+    [other_control_plane]
+    nodeB
+    
+    [new_control_plane_nodes]
+    nodeB
+    
+    [worker_nodes]
+    nodeC
+    
+    [promoted_worker_nodes]
+    nodeC
+    ```
+    * Run promote_worker_node playbook on nodeC. (After successful promotion remove the promoted node from the group)
+    ```
+    ansible-playbook -i hosts.ini promote_worker_to_control_plane.yml --extra-vars "k8s_version=1.15.4 encrypt_key=b2397eef1fb873b1ae6cde112795a852703b307909cc081bdb948ceddfb623ad" -vv
+    ```
