@@ -29,7 +29,7 @@
 
 - hosts: bootstrapmaster
   tasks:
-    - name: remove unschedulable label from worker nodes
+    - name: remove unschedulable taint from worker nodes
       shell: "kubectl taint node {{ hostvars[item]['ansible_hostname'] }} node-role.kubernetes.io/master-"
       with_items:
-        - "{{ groups['worker_nodes'] }}"
+        - "{{ groups['promoted_worker_nodes'] }}"

@@ -8,8 +8,6 @@
   tasks:
     - name: activate ip forwarding
       shell: echo 1 >> /proc/sys/net/bridge/bridge-nf-call-iptables
-    - name: set hostname
-      shell: hostname "{{ hostname }}"
     - name: set join command
       set_fact:
         join_command: "{{ hostvars[groups['bootstrapmaster'][0]]['join_command_raw'].stdout_lines[0] }}"
@@ -31,6 +29,6 @@
 - hosts: bootstrapmaster
   tasks: 
     - name: add worker lable to the worker nodes
-      shell: "kubectl label nodes {{ hostvars[item]['ansible_hostname'] }} node-role.kubernetes.io/worker=worker"
+      shell: "kubectl label nodes --overwrite=true {{ hostvars[item]['ansible_hostname'] }} node-role.kubernetes.io/worker=worker"
       with_items:
         - "{{ groups['worker_nodes'] }}"
