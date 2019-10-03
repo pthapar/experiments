@@ -97,11 +97,37 @@ This section goes through a set of workflows that would provide a hands-on exper
     Note: You can use custom value for encrypt_key as long as it meets kubeadm requirements.
  
  * Upgrade control plane nodes of an HA cluster to 1.15.4
-  * Stage upgrade: This step downloads binaries and docker images on all target hosts.
+   * Stage upgrade: This step downloads binaries and docker images on all target hosts.
     ```
     ansible-playbook -i hosts.ini stage.yml --extra-vars "k8s_version=1.15.4" -vv
     ```
-  * Apply upgrade: This step uses the binaries and docker images from previous step and applies the upgrade.
+   * Apply upgrade: This step uses the binaries and docker images from previous step and applies the upgrade.
     ```
     ansible-playbook -i hosts.ini apply.yml --extra-vars "k8s_version=1.15.4" -vv
     ```
+    
+ * Add a worker node at k8s version 1.15.4
+   * Add new node to `worker_nodes` group in ansible hosts.ini file
+    ```
+    [all]
+    nodeA ansible_host=<nodeA_IP_HERE> ansible_user=root
+    nodeB ansible_host=<nodeB_IP_HERE> ansible_user=root
+    nodeC ansible_host=<nodeC_IP_HERE> ansible_user=root
+    
+    [bootstrapmaster]
+    nodeA
+
+    [other_control_plane]
+    nodeB
+    
+    [new_control_plane_nodes]
+    nodeB
+    
+    [worker_nodes]
+    nodeC 
+    ```
+   * Execute ansible playbook to add the worker node:
+    ```
+    ansible-playbook -i hosts.ini add_worker_node.yml --extra-vars "k8s_version=1.15.4 hostname=k8s-lcm-ex3" -vv
+    ```
+     In order to avoid picking `localhost` as the hostname for new node in k8s, add_worker_node.yml asks for hostname. This   sets the hostname of the new node to given value.
