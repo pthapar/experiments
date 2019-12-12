@@ -1,0 +1,7 @@
+apiVersion: sherlock/v1alpha1
+kind: TestSet
+metadata:
+  name: example-testset
+spec:
+  # Add fields here
+  size: 3
