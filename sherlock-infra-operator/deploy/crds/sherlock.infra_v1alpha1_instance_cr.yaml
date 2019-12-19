@@ -1,0 +1,7 @@
+apiVersion: sherlock.infra/v1alpha1
+kind: Instance
+metadata:
+  name: example-instance
+spec:
+  # Add fields here
+  size: 3
